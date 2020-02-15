@@ -1,0 +1,12 @@
+{
+  "type": "mongodb",
+  "host": "localhost",
+  "port": 27017,
+  "database": "test",
+  "entities" : ["src/entity/*.js"],
+  "logging": true,
+  "synchronize": true,
+  "cli": {
+    "entitiesDir": "src/entity"
+  }
+}
