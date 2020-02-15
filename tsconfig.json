@@ -1,7 +1,12 @@
 {
   "compilerOptions": {
+    "paths": {
+      "*": [
+        "types/*"
+      ]
+    },
     "module": "commonjs",
-    "strict": true,
+    "strict": false,
     "baseUrl": "./",
     "outDir": "build",
     "removeComments": true,
