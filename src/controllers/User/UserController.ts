@@ -7,7 +7,6 @@ import {Logger} from '@overnightjs/logger';
 import {User} from '../../entities/User';
 import {getMongoManager} from 'typeorm';
 import {UserRepository } from '../../repositories/UserRepository';
-import {UserLoginCredentialDto} from './dto/userLoginCredential.dto';
 import {UserCredentialDto} from './dto/userCredential.dto';
 import {JwtManager, ISecureRequest} from '@overnightjs/jwt';
 @Controller('api/users')
@@ -21,21 +20,27 @@ export class UserController {
         })
     }
     @Get(':id')
-    @Middleware(JwtManager.middleware)
-    private async getUserById(req: ISecureRequest, res: Response) {
+    private async getUserById(req: Request, res: Response) {
         const { id } = req.params;
         const manager = getMongoManager();
-        const user: UserCredentialDto = await manager.findOne(id);
+        const user = await manager.findOne(User, id);
         if(user) {
             return res.status(OK).json({
               username: user.username,
               fullname: user.fullname,
               email: user.email,
+              created: user.created
             });
         }
         return res.status(BAD_REQUEST).json({
             message: 'User not existed',
         });
+    }
+    @Get('currentUser')
+    @Middleware(JwtManager.middleware)
+    private async getCurrentUser(req: ISecureRequest, res: Response) {
+        Logger.Info(req.payload, true);
+        return res.status(OK).json(req.payload);
     }
     @Post('create')
     private async createUser(req: Request, res: Response) {

@@ -1,4 +1,4 @@
-import {EntityRepository, getMongoManager, Repository} from 'typeorm';
+import {getMongoManager, Repository} from 'typeorm';
 import {User} from '../entities/User';
 import {UserCredentialDto} from '../controllers/User/dto/userCredential.dto';
 import {UserRole} from '../enums';
@@ -15,6 +15,7 @@ export class UserRepository extends Repository<User>{
         user.password = await UserRepository.hashPassword(password, user.salt);
         user.roles = UserRole.GUEST;
         user.username = username;
+        user.created = new Date();
         const manager = getMongoManager();
         try {
             await manager.save(user);
