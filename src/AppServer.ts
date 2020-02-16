@@ -1,30 +1,34 @@
 import 'reflect-metadata';
+import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as controllers from './controllers';
-import * as cors from 'cors';
+import cors from 'cors';
 import * as swagger from 'swagger-express-ts';
-import * as express from 'express';
 import {Request, Response} from 'express';
 import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
-import * as helmet from 'helmet';  // Security value of header cors
+import helmet from 'helmet';  // Security value of header cors
+import * as swaggerUi from 'swagger-ui-express';
+import * as swaggerDocument from './swaggerDocument.json';
+
 
 // @ts-ignore
 class AppServer extends Server {
 
-    private readonly SERVER_STARTED = 'Example server started on port: ';
+    private readonly SERVER_STARTED = 'Server started on port: ';
 
     private app: any;
     constructor() {
         super(true);
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({extended: true}));
-        this.app.use(helmet());
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
         this.enableCors();
+        this.app.use(helmet());
         this.setupControllers();
     }
 
-
+    // Add controllers
     private setupControllers(): void {
         const ctlrInstances = [];
         for (const name in controllers) {
@@ -35,6 +39,7 @@ class AppServer extends Server {
         }
         super.addControllers(ctlrInstances);
     }
+    // Allows to use header cors
     private enableCors(): void {
         const options: cors.CorsOptions = {
             allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'X-Access-Token'],
@@ -43,22 +48,8 @@ class AppServer extends Server {
             origin: 'localhost:30001',
             preflightContinue: false
         };
+        Logger.Info('Enables Cors');
         this.app.use(cors(options));
-    }
-    private setSwagger(): void {
-        this.app.use('/api-docs/swagger', express.static('swagger'));
-        this.app.use('/api-docs/swagger/assets', express.static('node_modules/swagger-ui-dis'));
-        this.app.use(swagger.express({
-            definition: {
-                info:{
-                    title: 'Server api',
-                    version: '1.0'
-                },
-                externalDocs: {
-                    url: 'My url'
-                }
-            }
-        }))
     }
     public start(port: number): void {
         this.app.get('*', (req: Request, res: Response) => {

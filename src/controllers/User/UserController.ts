@@ -17,7 +17,7 @@ export class UserController {
         const users = await manager.find(User);
         return res.status(OK).json({
             data: users,
-        })
+        });
     }
     @Get(':id')
     private async getUserById(req: Request, res: Response) {
