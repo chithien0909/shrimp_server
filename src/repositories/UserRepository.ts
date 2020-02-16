@@ -1,8 +1,8 @@
-import {EntityRepository, getMongoManager, Repository} from 'typeorm';
-import {User} from '../entities/User';
-import {UserCredentialDto} from '../controllers/User/dto/userCredential.dto';
-import {UserRole} from '../enums';
-import {BAD_REQUEST, OK} from 'http-status-codes';
+import { EntityRepository, getMongoManager, Repository } from 'typeorm';
+import { User } from '../entities/User';
+import { UserCredentialDto } from '../controllers/User/dto/userCredential.dto';
+import { UserRole } from '../enums';
+import { BAD_REQUEST, OK } from 'http-status-codes';
 import * as bcrypt from 'bcrypt';
 export class UserRepository extends Repository<User>{
     static async createUser(userCredentialDto: UserCredentialDto): Promise<any> {
