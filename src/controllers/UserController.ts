@@ -1,27 +1,38 @@
+import 'reflect-metadata';
 import { Request, Response } from 'express';
 import { Controller, Middleware, Get, Put, Post, Delete } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
-import { User } from '../entity/User';
+import { User } from '../entities/User';
 import {getMongoManager} from 'typeorm';
 
-@Controller('')
+@Controller('api/users')
 export class UserController {
-    @Get('/users')
+    @Get('getAll')
     private getAllUser(req: Request, res: Response) {
         // const user: User = new User();
+        res.send('Users');
     }
-
-
-    @Post(':msg')
+    @Post('create')
     private async createUser(req: Request, res: Response) {
-        // const user: User = new User();
-        // user.fullname = req.body.fullname;
-        // user.email = req.body.email;
-        // user.password = req.body.password;
-        // user.roles = req.body.roles;
-        // user.username = req.body.username;
-        // const manager = getMongoManager();
-        // await manager.save(user);
+
+        const user: User = new User();
+        user.fullname = req.body.fullname;
+        user.email = req.body.email;
+        user.password = req.body.password;
+        user.roles = req.body.roles;
+        user.username = req.body.username;
+        const manager = getMongoManager();
+        try {
+            await manager.save(user);
+            return res.status(200).json({
+                message: 'Create user success'
+            });
+        } catch (e) {
+            return res.status(400).json({
+                message: 'Create failed',
+                error: e,
+            });
+        }
     }
     @Put(':msg')
     private putMessage(req: Request, res: Response) {

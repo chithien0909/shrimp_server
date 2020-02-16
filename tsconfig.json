@@ -5,6 +5,7 @@
         "types/*"
       ]
     },
+    "allowSyntheticDefaultImports": true,
     "module": "commonjs",
     "strict": false,
     "baseUrl": "./",
@@ -26,6 +27,7 @@
     "./src/**/*.ts"
   ],
   "exclude": [
-    "./src/public/"
+    "./src/public/",
+    "./build"
   ]
 }
