@@ -22,8 +22,7 @@ export class UserController {
     private async createUser(req: Request, res: Response) {
         Logger.Info(req.body);
         const { username, email, password, fullname } = req.body;
-        const userRepository = new UserRepository();
-        const result = await userRepository.createUser(
+        const result = await UserRepository.createUser(
             { username, email, password, fullname }
         );
         return res.status(result.status).json(result);

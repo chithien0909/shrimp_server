@@ -5,9 +5,8 @@ import {UserRole} from '../enums';
 import {BAD_REQUEST, OK} from 'http-status-codes';
 import * as bcrypt from 'bcrypt';
 export class UserRepository extends Repository<User>{
-    async createUser(userCredentialDto: UserCredentialDto): Promise<any> {
+    static async createUser(userCredentialDto: UserCredentialDto): Promise<any> {
         const { username, email, password, fullname } = userCredentialDto;
-
         const user: User = new User();
         user.fullname = fullname;
         user.email = email;
