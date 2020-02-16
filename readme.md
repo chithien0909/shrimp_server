@@ -13,4 +13,7 @@ docker run -d -p 27017:27017 -v ~/data:/data/db mongo
     
 ## Build
     npm run build
+    
+## Api docs
+    http://localhost:3000/api-docs/
  
