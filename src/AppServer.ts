@@ -1,10 +1,14 @@
 import 'reflect-metadata';
 import * as bodyParser from 'body-parser';
 import * as controllers from './controllers';
+import * as cors from 'cors';
+import * as swagger from 'swagger-express-ts';
+import * as express from 'express';
 import {Request, Response} from 'express';
 import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
-import * as cors from 'cors';
+import {SwaggerDefinitionConstant} from 'swagger-express-ts';
+
 // @ts-ignore
 class AppServer extends Server {
 
@@ -16,6 +20,7 @@ class AppServer extends Server {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({extended: true}));
         this.setupControllers();
+        this.enableCors();
     }
 
 
@@ -39,12 +44,25 @@ class AppServer extends Server {
         };
         this.app.use(cors(options));
     }
-
+    private setSwagger(): void {
+        this.app.use('/api-docs/swagger', express.static('swagger'));
+        this.app.use('/api-docs/swagger/assets', express.static('node_modules/swagger-ui-dis'));
+        this.app.use(swagger.express({
+            definition: {
+                info:{
+                    title: 'Server api',
+                    version: '1.0'
+                },
+                externalDocs: {
+                    url: 'My url'
+                }
+            }
+        }))
+    }
     public start(port: number): void {
         this.app.get('*', (req: Request, res: Response) => {
             res.send(this.SERVER_STARTED + port);
         });
-        this.enableCors();
         this.app.listen(port, () => {
             Logger.Imp(this.SERVER_STARTED + port);
         });

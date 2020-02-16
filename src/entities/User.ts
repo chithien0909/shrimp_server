@@ -1,7 +1,9 @@
-import {Entity, ObjectID, ObjectIdColumn, Column} from 'typeorm';
-import { UserRole } from '../enums';
+import {Column, Entity, ObjectID, ObjectIdColumn, Unique} from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import {UserRole} from '../enums';
 
 @Entity()
+@Unique(['username'])
 export class User {
 
     @ObjectIdColumn()
@@ -20,8 +22,19 @@ export class User {
 
     @Column({
         type: 'enum',
-        enum: UserRole,
+        enum: [UserRole.GUEST, UserRole.ADMIN, UserRole.EDITOR],
         default: UserRole.GUEST
     })
     roles: UserRole;
+    @Column()
+    salt: string;
+    @Column({
+        nullable: true,
+        type: 'date'
+    })
+    created: Date;
+    async validatePassword(password: string): Promise<boolean> {
+        const hash = await bcrypt.hash(password, this.salt);
+        return hash === this.password;
+    }
 }
