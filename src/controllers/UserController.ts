@@ -1,27 +1,30 @@
 import { Request, Response } from 'express';
 import { Controller, Middleware, Get, Put, Post, Delete } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
+import { User } from '../entity/User';
+import {getMongoManager} from 'typeorm';
 
-@Controller('api')
+@Controller('')
 export class UserController {
-    @Get(':msg')
-    private getMessage(req: Request, res: Response) {
-        Logger.Info(req.params.msg);
-        res.status(200).json({
-            message: req.params.msg,
-        });
+    @Get('/users')
+    private getAllUser(req: Request, res: Response) {
+        // const user: User = new User();
     }
 
-    @Put(':msg')
-    private putMessage(req: Request, res: Response) {
-        Logger.Info(req.params.msg);
-        return res.status(400).json({
-            error: req.params.msg,
-        });
-    }
 
     @Post(':msg')
-    private postMessage(req: Request, res: Response) {
+    private async createUser(req: Request, res: Response) {
+        // const user: User = new User();
+        // user.fullname = req.body.fullname;
+        // user.email = req.body.email;
+        // user.password = req.body.password;
+        // user.roles = req.body.roles;
+        // user.username = req.body.username;
+        // const manager = getMongoManager();
+        // await manager.save(user);
+    }
+    @Put(':msg')
+    private putMessage(req: Request, res: Response) {
         Logger.Info(req.params.msg);
         return res.status(400).json({
             error: req.params.msg,
