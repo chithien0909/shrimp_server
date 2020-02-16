@@ -16,6 +16,8 @@
     "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "importHelpers": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "types": [
       "node"
     ],
@@ -23,10 +25,14 @@
       "node_modules/@types"
     ]
   },
+  "files": [
+    "./node_modules/@types/node/index.d.ts"
+  ],
   "include": [
     "./src/**/*.ts"
   ],
   "exclude": [
+    "node_modules",
     "./src/public/",
     "./build"
   ]

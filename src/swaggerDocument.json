@@ -1,0 +1,126 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+            "title": "Shrimp-TypeScript-NodeJS-CRUD-REST-API-Boilerplate",
+            "description": "A minimal and easy to follow example of what you need to create a CRUD style API in NodeJs using TypeScript",
+            "license": {
+            "name": "MIT",
+                "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "/",
+            "description": "Local Dev, or from Heroku"
+        },
+        {
+            "url": "/api/",
+            "description": "With docker-compose and nginx proxy"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Shrimp",
+            "description": "API for cats in the system"
+        }
+    ],
+    "consumes": [
+    "application/json"
+],
+    "produces": [
+    "application/json"
+],
+    "paths": {
+        "/api/users/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "id": "id of user"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user by id",
+                "responses": {
+                    "200": {
+                        "description": "Return username, email, fullname, created",
+                        "schema": {
+                            "$ref": "#/definitions/Cats"
+                        }
+                    },
+                    "400": {
+                        "description": "User not existed"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a new user in system",
+                "requestBody": {
+                    "description": "status",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/Cat"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/api/users/getAll": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get all users",
+                "responses": {
+                    "200": {
+                        "description": "Return list of users",
+                        "schema": {
+                            "$ref": "#/definitions/Cat"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Users": {
+            "type": "object",
+            "properties": {
+                "genus": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "isHungry": {
+                    "type": "boolean"
+                },
+                "lastFedDate": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
