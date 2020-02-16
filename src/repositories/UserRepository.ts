@@ -4,6 +4,7 @@ import {UserCredentialDto} from '../controllers/User/dto/userCredential.dto';
 import {UserRole} from '../enums';
 import {BAD_REQUEST, OK} from 'http-status-codes';
 import * as bcrypt from 'bcrypt';
+import {UserLoginCredentialDto} from '../controllers/User/dto/userLoginCredential.dto';
 export class UserRepository extends Repository<User>{
     static async createUser(userCredentialDto: UserCredentialDto): Promise<any> {
         const { username, email, password, fullname } = userCredentialDto;
@@ -29,6 +30,23 @@ export class UserRepository extends Repository<User>{
                 error: e,
             }
         }
+    }
+    static async loginUser(userLoginCredential: UserLoginCredentialDto) {
+        const {username, password} = userLoginCredential;
+        const manager = getMongoManager();
+        const user = await manager.findOne(User, {
+            username,
+        });
+        if(user && await user.validatePassword(password)) {
+            return {
+                username: user.username,
+                roles: user.roles,
+                fullname: user.fullname,
+                created: user.created,
+                email: user.email,
+            }
+        }
+        return null;
     }
     public static hashPassword(password: string, salt: string) {
         return bcrypt.hash(password, salt);

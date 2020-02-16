@@ -7,7 +7,7 @@ import * as express from 'express';
 import {Request, Response} from 'express';
 import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
-import {SwaggerDefinitionConstant} from 'swagger-express-ts';
+import * as helmet from 'helmet';  // Security value of header cors
 
 // @ts-ignore
 class AppServer extends Server {
@@ -19,8 +19,9 @@ class AppServer extends Server {
         super(true);
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({extended: true}));
-        this.setupControllers();
+        this.app.use(helmet());
         this.enableCors();
+        this.setupControllers();
     }
 
 
