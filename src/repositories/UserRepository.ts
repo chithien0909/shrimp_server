@@ -1,10 +1,10 @@
-import {getMongoManager, Repository} from 'typeorm';
-import {User} from '../entities/User';
-import {UserCredentialDto} from '../controllers/User/dto/userCredential.dto';
-import {UserRole} from '../enums';
-import {BAD_REQUEST, OK} from 'http-status-codes';
+import { getMongoManager, Repository } from 'typeorm';
+import { User } from '../entities/User';
+import { UserCredentialDto } from '../controllers/User/dto/userCredential.dto';
+import { UserRole } from '../enums';
+import { BAD_REQUEST, OK } from 'http-status-codes';
 import * as bcrypt from 'bcrypt';
-import {UserLoginCredentialDto} from '../controllers/User/dto/userLoginCredential.dto';
+import { UserLoginCredentialDto } from '../controllers/User/dto/userLoginCredential.dto';
 export class UserRepository extends Repository<User>{
     static async createUser(userCredentialDto: UserCredentialDto): Promise<any> {
         const { username, email, password, fullname } = userCredentialDto;
@@ -33,12 +33,12 @@ export class UserRepository extends Repository<User>{
         }
     }
     static async loginUser(userLoginCredential: UserLoginCredentialDto) {
-        const {username, password} = userLoginCredential;
+        const { username, password } = userLoginCredential;
         const manager = getMongoManager();
         const user = await manager.findOne(User, {
             username,
         });
-        if(user && await user.validatePassword(password)) {
+        if (user && await user.validatePassword(password)) {
             return {
                 username: user.username,
                 roles: user.roles,
