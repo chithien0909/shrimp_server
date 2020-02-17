@@ -6,9 +6,13 @@ import {NewFeedParams} from './NewFeedType';
 import {NewFeedService} from './NewFeedService';
 @Controller('api/newfeeds')
 export class NewFeedController {
+    private newFeedService: NewFeedService;
+    constructor() {
+        this.newFeedService = new NewFeedService();
+    }
     @Get('all')
     private async allNewFeeds(req: Request, res: Response) {
-        const newFeeds = await NewFeedService.getAll();
+        const newFeeds = await this.newFeedService.getAll();
         return res.status(OK).json({
             data: newFeeds,
         });
@@ -23,7 +27,7 @@ export class NewFeedController {
                 createdAt: order
             }
         };
-        const newFeeds = await NewFeedService.getAll(options);
+        const newFeeds = await this.newFeedService.getAll(options);
         return res.status(OK).json({
             data: newFeeds,
         });
