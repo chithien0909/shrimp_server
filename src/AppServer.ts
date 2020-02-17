@@ -9,7 +9,7 @@ import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 import helmet from 'helmet';  // Security value of header cors
 import * as swaggerUi from 'swagger-ui-express';
-import * as swaggerDocument from './swaggerDocument.json';
+import * as swaggerDocument from '../swaggerDocument.json';
 
 
 // @ts-ignore
