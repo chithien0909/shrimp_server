@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 import * as controllers from './controllers';
 import cors from 'cors';
 import * as swagger from 'swagger-express-ts';
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 import helmet from 'helmet';  // Security value of header cors
@@ -17,11 +17,10 @@ class AppServer extends Server {
 
     private readonly SERVER_STARTED = 'Server started on port: ';
 
-    private app: any;
     constructor() {
         super(true);
         this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({extended: true}));
+        this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
         this.enableCors();
         this.app.use(helmet());
@@ -42,7 +41,13 @@ class AppServer extends Server {
     // Allows to use header cors
     private enableCors(): void {
         const options: cors.CorsOptions = {
-            allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'X-Access-Token'],
+            allowedHeaders: [
+                'Origin',
+                'X-Requested-With',
+                'Content-Type',
+                'Accept',
+                'X-Access-Token'
+            ],
             credentials: true,
             methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
             origin: 'localhost:30001',
