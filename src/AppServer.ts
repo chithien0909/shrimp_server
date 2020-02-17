@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import * as bodyParser from 'body-parser';
 import * as controllers from './controllers';
 import cors from 'cors';
-import { Request, Response } from 'express';
+import {Application, Request, Response} from 'express';
 import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 import helmet from 'helmet';  // Security value of header cors
@@ -12,9 +12,7 @@ import * as swaggerDocument from '../swaggerDocument.json';
 
 // @ts-ignore
 class AppServer extends Server {
-
     private readonly SERVER_STARTED = 'Server started on port: ';
-
     constructor() {
         super(true);
         this.app.use(bodyParser.json());

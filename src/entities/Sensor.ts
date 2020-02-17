@@ -1,19 +1,21 @@
 
 import {Column, Entity, ObjectID, ObjectIdColumn, Unique} from 'typeorm';
 import {SensorDetail} from './SensorDetail';
-
+import DateTimeFormat = Intl.DateTimeFormat;
 @Entity()
-export class Sensor {
-
+export class Sensors {
     @ObjectIdColumn()
     _id: ObjectID;
+    @Column()
+    waterTemporature: string;
+    @Column()
+    oxygenSaturation: string;
 
     @Column()
-    0: SensorDetail;
-
+    salinity: string;
     @Column()
-    1: SensorDetail;
-
+    createdAt: DateTimeFormat;
     @Column()
-    2: SensorDetail;
+    updateAt: DateTimeFormat;
+
 }

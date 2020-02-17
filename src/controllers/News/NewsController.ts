@@ -1,4 +1,3 @@
-import * as bcrypt from 'bcrypt';
 import 'reflect-metadata';
 import {BAD_REQUEST, OK} from 'http-status-codes';
 import {Request, Response} from 'express';
@@ -7,7 +6,7 @@ import {getMongoManager} from 'typeorm';
 import {News} from '../../entities/News';
 @Controller('api/news')
 export class NewsController {
-    @Get('getAll')
+    @Get('all')
     private async getAllUser(req: Request, res: Response) {
         const manager = getMongoManager();
         const news = await manager.find(News);

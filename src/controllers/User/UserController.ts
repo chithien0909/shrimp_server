@@ -1,31 +1,28 @@
-import * as bcrypt from 'bcrypt';
 import 'reflect-metadata';
 import {BAD_REQUEST, OK} from 'http-status-codes';
 import {Request, Response} from 'express';
-import {Controller, Delete, Get, Middleware, Post, Put} from '@overnightjs/core';
+import {Controller, Get, Middleware, Post} from '@overnightjs/core';
 import {Logger} from '@overnightjs/logger';
-import {User} from '../../entities/User';
-import {getMongoManager} from 'typeorm';
-import {UserRepository } from '../../repositories/UserRepository';
+import {UserRepository } from './UserRepository';
 import {UserCredentialDto} from './dto/userCredential.dto';
 import {JwtManager, ISecureRequest} from '@overnightjs/jwt';
+import {UserService} from './UserService';
+import {UserTypes} from './UserTypes';
+
 @Controller('api/users')
 export class UserController {
-    @Get('getAll')
-    private async getAllUser(req: Request, res: Response) {
-        const manager = getMongoManager();
-        const users = await manager.find(User, {
-            select: ['id', 'email', 'fullname', 'roles']
-        });
+    @Get('all')
+    private async allUser(req: Request, res: Response) {
+        const users = UserService.getAll(['id', 'email', 'fullname', 'roles']);
         return res.status(OK).json({
             data: users,
         });
     }
     @Get(':id')
-    private async getUserById(req: Request, res: Response) {
+    private async userById(req: Request, res: Response) {
         const { id } = req.params;
-        const manager = getMongoManager();
-        const user = await manager.findOne(User, id);
+        const user: UserTypes = await UserService.getById(id);
+        Logger.Info('Get user by id' + id);
         if(user) {
             return res.status(OK).json({
               username: user.username,
@@ -38,29 +35,25 @@ export class UserController {
             message: 'User not existed',
         });
     }
-    @Get('currentUser')
+    @Get('info')
     @Middleware(JwtManager.middleware)
-    private async getCurrentUser(req: ISecureRequest, res: Response) {
+    private async currentUser(req: ISecureRequest, res: Response) {
         Logger.Info(req.payload, true);
         return res.status(OK).json(req.payload);
     }
-    @Post('create')
-    private async createUser(req: Request, res: Response) {
+    @Post('register')
+    private async register(req: Request, res: Response) {
         Logger.Info(req.body);
         const { username, email, password, fullname }: UserCredentialDto = req.body;
         const result = await UserRepository.createUser(
-            { username, email, password, fullname }
+            {username, email, password, fullname }
         );
         return res.status(result.status).json(result);
     }
     @Post('login')
     private async login(req: Request, res: Response) {
         Logger.Info(req.body);
-        const {username, password} = req.body;
-        const result = await UserRepository.loginUser({
-            username,
-            password
-        });
+        const result = await UserService.createUser(req.body);
         if(result) {
             const jwtStr = JwtManager.jwt({
                 username: result.username,
