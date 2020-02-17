@@ -14,7 +14,9 @@ export class UserController {
     @Get('getAll')
     private async getAllUser(req: Request, res: Response) {
         const manager = getMongoManager();
-        const users = await manager.find(User);
+        const users = await manager.find(User, {
+            select: ['id', 'email', 'fullname', 'roles']
+        });
         return res.status(OK).json({
             data: users,
         });
