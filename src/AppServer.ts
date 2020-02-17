@@ -1,9 +1,7 @@
 import 'reflect-metadata';
-import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as controllers from './controllers';
 import cors from 'cors';
-import * as swagger from 'swagger-express-ts';
 import { Request, Response } from 'express';
 import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
