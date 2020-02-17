@@ -10,5 +10,5 @@ createConnection().then(async connection => {
     Logger.Imp('TypeORM connection success');
 })
 .catch(error => {
-    Logger.Err('TypeORM connection error: ', error);
+    Logger.Err('TypeORM connection error: '+ error);
 });

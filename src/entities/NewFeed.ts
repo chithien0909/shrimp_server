@@ -2,7 +2,6 @@ import {Column, Entity, ObjectID, ObjectIdColumn, Unique} from 'typeorm';
 import DateTimeFormat = Intl.DateTimeFormat;
 
 @Entity()
-@Unique(['_id'])
 export class NewFeed {
     @ObjectIdColumn()
     _id: ObjectID;

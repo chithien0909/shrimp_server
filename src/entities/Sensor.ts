@@ -3,9 +3,6 @@ import {Column, Entity, ObjectID, ObjectIdColumn, Unique} from 'typeorm';
 import {SensorDetail} from './SensorDetail';
 
 @Entity()
-@Unique(['_id'])
-
-// TODO: Column fields type warn
 export class Sensor {
 
     @ObjectIdColumn()
