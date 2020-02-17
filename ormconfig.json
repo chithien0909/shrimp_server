@@ -2,7 +2,7 @@
   "type": "mongodb",
   "host": "localhost",
   "port": 27017,
-  "database": "test",
+  "database": "shrimp_db",
   "entities" : ["src/entities/*.ts"],
   "logging": true,
   "synchronize": true,

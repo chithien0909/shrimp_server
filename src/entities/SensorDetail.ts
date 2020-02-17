@@ -1,10 +1,8 @@
-import {Column, Unique, } from 'typeorm';
+import {Column } from 'typeorm';
 import DateTimeFormat = Intl.DateTimeFormat;
 
-//     'created_at': '2020-02-16T13:19:38+07:00',
 export class SensorDetail {
     @Column()
-        // tslint:disable-next-line:variable-name
     created_at: DateTimeFormat;
     @Column()
     name: string;
