@@ -1,7 +1,7 @@
-
 import {Column, Entity, ObjectID, ObjectIdColumn, Unique} from 'typeorm';
 import {SensorDetail} from './SensorDetail';
 import DateTimeFormat = Intl.DateTimeFormat;
+
 @Entity()
 export class Sensors {
     @ObjectIdColumn()
