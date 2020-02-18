@@ -14,7 +14,7 @@ import * as bcrypt from 'bcrypt';
 import { UserLoginCredentialDto } from './dto/userLoginCredential.dto';
 
 @EntityRepository(User)
-export class UserRepository extends Repository<User>{
+export class UserRepository extends MongoRepository<User>{
     private _manager: MongoRepository<User> = getMongoRepository(User);
     public async select(options = {}){
         return await this._manager.find(options);
