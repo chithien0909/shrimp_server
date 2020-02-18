@@ -1,8 +1,8 @@
-import {Column, Entity, ObjectID, ObjectIdColumn, Unique} from 'typeorm';
+import {Column, Entity, ObjectID, ObjectIdColumn} from 'typeorm';
 import DateTimeFormat = Intl.DateTimeFormat;
 
 @Entity()
-export class NewFeed {
+export class Newfeeds {
     @ObjectIdColumn()
     _id: ObjectID;
 
@@ -32,6 +32,9 @@ export class NewFeed {
 
     @Column()
     title: string;
+
+    @Column()
+    newfeedid: string;
 
     @Column()
     newfeedContent: string;

@@ -4,3 +4,5 @@ services:
     container_name: mongo
     image: mongo:latest
     env_file:
+    ports:
+      - 27017:27017
