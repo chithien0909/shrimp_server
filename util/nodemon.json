@@ -1,5 +1,5 @@
 {
-  "watch": ["src"],
+  "watch": ["src/controllers/News"],
   "ext": "ts",
   "ignore": ["src/public"],
   "exec": "ts-node src/AppModule.ts"
