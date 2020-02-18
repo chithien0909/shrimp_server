@@ -4,6 +4,7 @@ import {Request, Response} from 'express';
 import {Controller, Get} from '@overnightjs/core';
 import {NewFeedParams} from './NewFeedType';
 import {NewFeedService} from './NewFeedService';
+
 @Controller('api/newfeeds')
 export class NewFeedController {
     private newFeedService: NewFeedService;

@@ -3,17 +3,22 @@ import {BAD_REQUEST, OK} from 'http-status-codes';
 import {Request, Response} from 'express';
 import {Controller, Get, Middleware, Post} from '@overnightjs/core';
 import {Logger} from '@overnightjs/logger';
-import {UserRepository } from './UserRepository';
 import {UserCredentialDto} from './dto/userCredential.dto';
 import {JwtManager, ISecureRequest} from '@overnightjs/jwt';
 import {UserService} from './UserService';
-import {UserTypes} from './UserTypes';
+import { UserTypes} from './UserTypes';
 
 @Controller('api/users')
 export class UserController {
+    private userService: UserService;
+
+    constructor() {
+        this.userService = new UserService();
+    }
+
     @Get('all')
     private async allUser(req: Request, res: Response) {
-        const users = UserService.getAll(['id', 'email', 'fullname', 'roles']);
+        const users = this.userService.getAll(['id', 'email', 'fullname', 'roles']);
         return res.status(OK).json({
             data: users,
         });
@@ -21,7 +26,7 @@ export class UserController {
     @Get(':id')
     private async userById(req: Request, res: Response) {
         const { id } = req.params;
-        const user: UserTypes = await UserService.getById(id);
+        const user: UserTypes = await this.userService.getById(id);
         Logger.Info('Get user by id' + id);
         if(user) {
             return res.status(OK).json({
@@ -45,15 +50,18 @@ export class UserController {
     private async register(req: Request, res: Response) {
         Logger.Info(req.body);
         const { username, email, password, fullname }: UserCredentialDto = req.body;
-        const result = await UserRepository.createUser(
+        const result = await this.userService.createUser(
             {username, email, password, fullname }
         );
-        return res.status(result.status).json(result);
+        if(result){
+            return res.status(OK).json(result);
+        }
+        return res.status(BAD_REQUEST).json(result);
     }
     @Post('login')
     private async login(req: Request, res: Response) {
         Logger.Info(req.body);
-        const result = await UserService.createUser(req.body);
+        const result = await this.userService.createUser(req.body);
         if(result) {
             const jwtStr = JwtManager.jwt({
                 username: result.username,

@@ -1,9 +1,13 @@
-import {getMongoManager} from 'typeorm';
-import {Newfeeds} from '../../entities/Newfeeds';
+import {NewFeedRepository} from './NewFeedRepository';
 
 export class NewFeedService {
+    private newFeedRepository: NewFeedRepository;
+    constructor(){
+        this.newFeedRepository = new NewFeedRepository();
+    }
     public async getAll(options = {}){
-        const manager = getMongoManager();
-        return await manager.find(Newfeeds, options);
+        return await this.newFeedRepository.select(options);
     }
 }
+
+
