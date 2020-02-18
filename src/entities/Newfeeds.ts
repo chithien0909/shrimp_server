@@ -13,16 +13,7 @@ export class Newfeeds {
     updatedAt: DateTimeFormat;
 
     @ObjectIdColumn()
-    postId: ObjectID;
-
-    @ObjectIdColumn()
     accountId: ObjectID;
-
-    @Column()
-    profilePhoto: string;
-
-    @Column()
-    userFullName: string;
 
     @Column()
     images: string[];
