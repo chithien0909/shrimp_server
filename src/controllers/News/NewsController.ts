@@ -2,17 +2,30 @@ import 'reflect-metadata';
 import {OK, NOT_FOUND} from 'http-status-codes';
 import {Request, Response} from 'express';
 import {Controller, Get} from '@overnightjs/core';
-import {NewsRepository} from './NewsRepository';
+import {NewsTypes} from './NewsTypes';
+import {NewsService} from './NewsService';
 
 @Controller('api/news')
 export class NewsController {
-    @Get('getTopNews/:amount')
-    private async getTopNews(req: Request, res: Response) {
-        const {amount} = req.params ;
-        // tslint:disable-next-line:radix
-        const news = await NewsRepository.fetchNews(0, parseInt(amount));
+    private service: NewsService;
 
-        if (!news.length) {
+    constructor() {
+        this.service = new NewsService();
+    }
+
+    @Get('getTopNews')
+    private async getTopNews(req: Request, res: Response) {
+        const {start = 0, amount}: NewsTypes = req.query;
+        const news = await this.service.getNews({
+            order: {
+                createdAt: 'DESC'
+            },
+            skip: Number(start),
+            take: Number(amount),
+            cache: true
+        });
+
+        if (!news || !news.length) {
             return res.status(NOT_FOUND).json({
                 message: 'Not found!'
             });
@@ -23,15 +36,21 @@ export class NewsController {
         }
     }
 
-    @Get('getNews/:start?amount')
+    @Get('/')
     private async getNews(req: Request, res: Response) {
-        const {start, amount} = req.params;
-        // tslint:disable-next-line:radix
-        const news = await NewsRepository.fetchNews(parseInt(start), parseInt(amount));
-
-        if (!news) {
+        const {start = 0, amount = 5}: NewsTypes = req.query;
+        const news = await this.service.getNews({
+            order: {
+                createdAt: 'DESC'
+            },
+            skip: Number(start),
+            take: Number(amount),
+            cache: true
+        });
+        if (!news || !news.length) {
             return res.status(NOT_FOUND).json({
                 message: 'Not found! ',
+                data: null,
             });
         } else {
             return res.status(OK).json({
