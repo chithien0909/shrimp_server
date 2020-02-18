@@ -5,3 +5,7 @@ export interface UserTypes {
     created: Date;
     fullname: string;
 }
+
+export interface UserResult {
+    status?: number;
+}
